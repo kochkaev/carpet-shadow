@@ -3,6 +3,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.BuiltinRegistries;
 
 import java.util.Collection;
 
@@ -25,7 +26,8 @@ public interface InventoryItem {
                 }
             }catch (Exception ignored){}
 
-            instance.readNbt(nbt);
+//            instance.readNbt(nbt);
+            instance.readComponentlessNbt(nbt, BuiltinRegistries.createWrapperLookup());
 
             try {
                 for (int index = 0; index < inv.size(); index++) {
@@ -36,7 +38,8 @@ public interface InventoryItem {
                 }
             }catch (Exception ignored){}
         } else {
-            instance.readNbt(nbt);
+//            instance.readNbt(nbt);
+            instance.readComponentlessNbt(nbt, BuiltinRegistries.createWrapperLookup());
         }
     }
 }

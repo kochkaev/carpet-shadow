@@ -10,6 +10,9 @@
       "contact": {
         "discord": "mattymatty#9621"
       }
+    },
+    {
+      "name": "kochkaev"
     }
   ],
   "contact": {
@@ -41,7 +44,7 @@
   ],
   "depends": {
     "carpet": ">=1.4.112",
-    "minecraft": "1.20.1+"
+    "minecraft": ">=1.20.6"
   },
   "custom": {
     "modmenu": {

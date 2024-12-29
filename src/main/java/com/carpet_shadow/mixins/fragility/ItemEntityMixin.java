@@ -43,8 +43,9 @@ public abstract class ItemEntityMixin {
     }
 
     @Inject(method = "onPlayerCollision", at = @At(value = "RETURN"))
-    public void resetEntityForStack(PlayerEntity player, CallbackInfo ci, @Local(ordinal = 0) ItemStack stack) {
-        ((ItemEntitySlot) (Object) stack).carpet_shadow$setEntity(null);
+    public void resetEntityForStack(PlayerEntity player, CallbackInfo ci/*, @Local(ordinal = 0) ItemStack itemStack*/) {
+        final var itemStack = ((ItemEntity)(Object)this).getStack();
+        ((ItemEntitySlot) (Object) itemStack).carpet_shadow$setEntity(null);
     }
 
     @Inject(method = "onPlayerCollision", at = @At("HEAD"))

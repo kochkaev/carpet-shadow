@@ -20,7 +20,7 @@ public abstract class PlayerInventoryMixin {
     @Shadow
     public abstract void setStack(int slot, ItemStack stack);
 
-    @WrapOperation(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at=@At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setCount(I)V"), slice = @Slice(from = @At(value = "FIELD",target = "Lnet/minecraft/entity/player/PlayerAbilities;creativeMode:Z")))
+    @WrapOperation(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at=@At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setCount(I)V"), slice = @Slice(from = @At(value = "INVOKE",target = "Lnet/minecraft/entity/player/PlayerEntity;isInCreativeMode()Z")))
     private void modify_count(ItemStack instance, int count, Operation<Void> original){
         if(count==0 && CarpetShadowSettings.shadowItemInventoryFragilityFix && ((ShadowItem) (Object) instance).carpet_shadow$getShadowId() != null){
             ItemEntity entity = ((ItemEntitySlot) (Object) instance).carpet_shadow$getEntity();

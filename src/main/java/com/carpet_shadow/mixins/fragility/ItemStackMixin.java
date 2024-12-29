@@ -34,7 +34,7 @@ public abstract class ItemStackMixin implements ItemEntitySlot, ShifingItem {
         this.shiftMoving = shiftMoving;
     }
 
-    @ModifyReturnValue(method = "canCombine", at = @At("RETURN"))
+    @ModifyReturnValue(method = "areItemsAndComponentsEqual", at = @At("RETURN"))
     private static boolean check_combine(boolean original, ItemStack stack, ItemStack otherStack) {
         return Globals.shadow_merge_check(stack, otherStack, original);
     }

@@ -77,7 +77,7 @@ public abstract class ScreenHandlerMixin {
     @WrapOperation(method = "insertItem", slice = @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/screen/slot/Slot;getStack()Lnet/minecraft/item/ItemStack;", ordinal = 1)
     ),
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;split(I)Lnet/minecraft/item/ItemStack;", ordinal = 1))
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;split(I)Lnet/minecraft/item/ItemStack;", ordinal = 0))
     public ItemStack fix_shift(ItemStack instance, int amount, Operation<ItemStack> original) {
         if (CarpetShadowSettings.shadowItemInventoryFragilityFix && ((ShadowItem) (Object) instance).carpet_shadow$getShadowId() != null) {
             String shadow_id = ((ShadowItem) (Object) instance).carpet_shadow$getShadowId();
