@@ -13,8 +13,7 @@ public class LootTableMixin {
 
     @WrapOperation(method = "method_331", at=@At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;copyWithCount(I)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack fix_survival_shulkers(ItemStack instance, int count, Operation<ItemStack> original){
-        String shadowId = ((ShadowItem)(Object)instance).carpet_shadow$getShadowId();
-        if (shadowId != null){
+        if (((ShadowItem)(Object)instance).carpet_shadow$isItShadowItem()){
             if (instance.getCount() == count){
                 return instance;
             }else if (count < instance.getMaxCount()) {

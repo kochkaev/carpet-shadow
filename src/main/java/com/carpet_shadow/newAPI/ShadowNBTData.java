@@ -1,7 +1,5 @@
-package com.carpet_shadow;
+package com.carpet_shadow.newAPI;
 
-import com.carpet_shadow.interfaces.ShadowComponent;
-import com.mojang.serialization.Codec;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;

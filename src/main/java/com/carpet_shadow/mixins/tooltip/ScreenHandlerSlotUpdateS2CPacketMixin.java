@@ -2,7 +2,6 @@ package com.carpet_shadow.mixins.tooltip;
 
 import com.carpet_shadow.CarpetShadowSettings;
 import com.carpet_shadow.interfaces.ShadowItem;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.item.ItemStack;
@@ -19,16 +18,4 @@ public abstract class ScreenHandlerSlotUpdateS2CPacketMixin {
         }
         return original.call(instance);
     }
-
-//    @ModifyReturnValue(method = "getStack", at = @At("RETURN"))
-//    public ItemStack getShadowStack(ItemStack ret){
-//        if (CarpetShadowSettings.shadowItemTooltip){
-////            String id = ((ShadowItem)(Object)ret).carpet_shadow$getClientShadowId();
-//            String id = ((ShadowItem)(Object)ret).carpet_shadow$getShadowId();
-////            ((ShadowItem)(Object)ret).carpet_shadow$setShadowId(null);
-////            ((ShadowItem)(Object)ret).carpet_shadow$setClientShadowId(id);
-//            ((ShadowItem)(Object)ret).carpet_shadow$setShadowId(id);
-//        }
-//        return ret;
-//    }
 }

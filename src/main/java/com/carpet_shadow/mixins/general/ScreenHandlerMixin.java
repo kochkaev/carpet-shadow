@@ -48,7 +48,7 @@ public abstract class ScreenHandlerMixin {
             if(shadow != null){
                 CarpetShadow.LOGGER.warn("New Shadow Item Created");
                 String shadow_id = ((ShadowItem) (Object) shadow).carpet_shadow$getShadowId();
-                if (shadow_id == null)
+                if (shadow_id == null || shadow_id.isEmpty())
                     shadow_id = CarpetShadow.shadow_id_generator.nextString();
                 Globals.getByIdOrAdd(shadow_id,shadow);
                 if (CarpetShadowSettings.shadowItemMode == CarpetShadowSettings.Mode.UNLINK) {

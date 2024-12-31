@@ -26,7 +26,6 @@ public interface InventoryItem {
                 }
             }catch (Exception ignored){}
 
-//            instance.readNbt(nbt);
             instance.readComponentlessNbt(nbt, BuiltinRegistries.createWrapperLookup());
 
             try {
@@ -38,7 +37,6 @@ public interface InventoryItem {
                 }
             }catch (Exception ignored){}
         } else {
-//            instance.readNbt(nbt);
             instance.readComponentlessNbt(nbt, BuiltinRegistries.createWrapperLookup());
         }
     }

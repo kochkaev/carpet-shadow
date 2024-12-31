@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,7 +40,7 @@ public abstract class ScreenHandlerMixin {
     public void remove_shadow_stack(ScreenHandler instance, ItemStack stack, Operation<Void> original) {
         String shadowId1 = ((ShadowItem) (Object) getCursorStack()).carpet_shadow$getShadowId();
         String shadowId2 = ((ShadowItem) (Object) stack).carpet_shadow$getShadowId();
-        if (CarpetShadowSettings.shadowItemInventoryFragilityFix && shadowId1 != null && shadowId1.equals(shadowId2)) {
+        if (CarpetShadowSettings.shadowItemInventoryFragilityFix && ((ShadowItem)(Object)stack).carpet_shadow$isItShadowItem() && shadowId1.equals(shadowId2)) {
             instance.setCursorStack(ItemStack.EMPTY);
         } else {
             original.call(instance, stack);
@@ -56,7 +55,7 @@ public abstract class ScreenHandlerMixin {
         if (CarpetShadowSettings.shadowItemInventoryFragilityFix) {
             Slot og = instance.slots.get(index);
             ItemStack og_item = og.getStack();
-            if (((ShadowItem) (Object) og_item).carpet_shadow$getShadowId() != null) {
+            if (((ShadowItem) (Object) og_item).carpet_shadow$isItShadowItem()) {
                 ItemStack mirror = og_item.copy();
                 ((ShadowItem) (Object) mirror).carpet_shadow$setShadowId(((ShadowItem) (Object) og_item).carpet_shadow$getShadowId());
                 og.setStack(mirror);
@@ -79,7 +78,7 @@ public abstract class ScreenHandlerMixin {
     ),
             at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;split(I)Lnet/minecraft/item/ItemStack;", ordinal = 0))
     public ItemStack fix_shift(ItemStack instance, int amount, Operation<ItemStack> original) {
-        if (CarpetShadowSettings.shadowItemInventoryFragilityFix && ((ShadowItem) (Object) instance).carpet_shadow$getShadowId() != null) {
+        if (CarpetShadowSettings.shadowItemInventoryFragilityFix && ((ShadowItem) (Object) instance).carpet_shadow$isItShadowItem()) {
             String shadow_id = ((ShadowItem) (Object) instance).carpet_shadow$getShadowId();
             ItemStack og_item = Globals.getByIdOrNull(shadow_id);
             if (og_item != null) {

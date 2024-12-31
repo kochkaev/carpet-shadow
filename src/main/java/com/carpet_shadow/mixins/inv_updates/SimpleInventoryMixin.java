@@ -21,7 +21,7 @@ public abstract class SimpleInventoryMixin {
     @Inject(method = "removeStack(I)Lnet/minecraft/item/ItemStack;", at = @At("HEAD"))
     public void track_remove(int slot, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack curr = getStack(slot);
-        if (((ShadowItem) (Object) curr).carpet_shadow$getShadowId() != null) {
+        if (((ShadowItem) (Object) curr).carpet_shadow$isItShadowItem()) {
             ((InventoryItem) (Object) curr).carpet_shadow$removeSlot((Inventory) this, slot);
         }
     }
@@ -29,10 +29,10 @@ public abstract class SimpleInventoryMixin {
     @Inject(method = "setStack", at = @At("HEAD"))
     public void track_set(int slot, ItemStack next, CallbackInfo ci) {
         ItemStack curr = getStack(slot);
-        if (((ShadowItem) (Object) curr).carpet_shadow$getShadowId() != null) {
+        if (((ShadowItem) (Object) curr).carpet_shadow$isItShadowItem()) {
             ((InventoryItem) (Object) curr).carpet_shadow$removeSlot((Inventory) this, slot);
         }
-        if (((ShadowItem) (Object) next).carpet_shadow$getShadowId() != null) {
+        if (((ShadowItem) (Object) next).carpet_shadow$isItShadowItem()) {
             ((InventoryItem) (Object) next).carpet_shadow$addSlot((Inventory) this, slot);
         }
     }
