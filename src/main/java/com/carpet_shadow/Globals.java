@@ -33,29 +33,18 @@ public class Globals {
     public static boolean shadow_merge_check(ItemStack stack1, ItemStack stack2, boolean ret) {
         var allowed = ret;
         if (CarpetShadowSettings.shadowItemInventoryFragilityFix && mergingThreads.contains(Thread.currentThread())) {
-            String shadow1 = ((ShadowItem) (Object) stack1).carpet_shadow$getShadowId();
-            String shadow2 = ((ShadowItem) (Object) stack2).carpet_shadow$getShadowId();
-            if (CarpetShadowSettings.shadowItemTooltip && stack1.isOf(stack2.getItem()) &&
-                    (
-                        (
-                            shadow1 != null
-                            && (
-                                stack2.getComponents().get(DataComponentTypes.LORE) == null
-                                || !stack2.getComponents().get(DataComponentTypes.LORE).lines().stream().anyMatch(it -> it.getString().matches("shadow_id: (\\S+?)"))
-                            )
-                        ) || (
-                            shadow2 != null
-                            && (
-                                stack1.getComponents().get(DataComponentTypes.LORE) == null
-                                || !stack1.getComponents().get(DataComponentTypes.LORE).lines().stream().anyMatch(it -> it.getString().matches("shadow_id: (\\S+?)"))
-                            )
-                        )
-                    )
-            ) allowed = true;
+            var shadowStack1 = (ShadowItem) (Object) stack1;
+            var shadowStack2 = (ShadowItem) (Object) stack2;
+            var isStack1Shadow = shadowStack1.carpet_shadow$isItShadowItem();
+            var isStack2Shadow = shadowStack2.carpet_shadow$isItShadowItem();
+            String shadow1 = shadowStack1.carpet_shadow$getShadowId();
+            String shadow2 = shadowStack2.carpet_shadow$getShadowId();
+            if (stack1.isOf(stack2.getItem()) && ((isStack1Shadow && !isStack2Shadow) || (!isStack1Shadow && isStack2Shadow)))
+                allowed = true;
             if (CarpetShadowSettings.shadowItemPreventCombine && allowed) {
-                if (shadow1 != null && shadow2 != null)
+                if (isStack1Shadow && isStack2Shadow)
                     allowed =  false;
-            } else if (shadow1 != null && shadow1.equals(shadow2) && allowed)
+            } else if (isStack1Shadow && shadow1.equals(shadow2) && allowed)
                     allowed =  false;
         }
         return allowed;
