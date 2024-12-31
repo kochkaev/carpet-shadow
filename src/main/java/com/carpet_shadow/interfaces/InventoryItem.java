@@ -20,7 +20,7 @@ public interface InventoryItem {
             try {
                 for (int index = 0; index < inv.size(); index++) {
                     ItemStack stack = inv.getStack(index);
-                    if (((ShadowItem) (Object) stack).carpet_shadow$getShadowId() != null) {
+                    if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
                         ((InventoryItem) (Object) stack).carpet_shadow$removeSlot(inv, index);
                     }
                 }
@@ -31,7 +31,7 @@ public interface InventoryItem {
             try {
                 for (int index = 0; index < inv.size(); index++) {
                     ItemStack stack = inv.getStack(index);
-                    if (((ShadowItem) (Object) stack).carpet_shadow$getShadowId() != null) {
+                    if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
                         ((InventoryItem) (Object) stack).carpet_shadow$addSlot(inv, index);
                     }
                 }

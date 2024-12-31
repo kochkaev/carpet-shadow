@@ -2,6 +2,8 @@ package com.carpet_shadow;
 
 import carpet.CarpetExtension;
 import carpet.CarpetServer;
+import com.carpet_shadow.interfaces.InventoryItem;
+import com.carpet_shadow.interfaces.ShadowItem;
 import com.carpet_shadow.newAPI.ShadowNBTData;
 import com.carpet_shadow.utility.RandomString;
 import com.google.common.cache.Cache;
@@ -10,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.IOUtils;
@@ -41,6 +44,17 @@ public class CarpetShadow implements CarpetExtension, ModInitializer {
         CarpetServer.manageExtension(new CarpetShadow());
 //        Identifier.of("carpet-shadow", "shadow");
         new ShadowNBTData();
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            try {
+                var inv = handler.getPlayer().getInventory();
+                for (int index = 0; index < inv.size(); index++) {
+                    ItemStack stack = inv.getStack(index);
+                    if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
+                        ((InventoryItem) (Object) stack).carpet_shadow$addSlot(inv, index);
+                    }
+                }
+            } catch (Exception e) {}
+        });
         CarpetShadow.LOGGER.info("Carpet Shadow Loading!");
     }
 
