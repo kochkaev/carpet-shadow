@@ -41,23 +41,32 @@ public class Globals {
         if (CarpetShadowSettings.shadowItemInventoryFragilityFix && mergingThreads.contains(Thread.currentThread())) {
             String shadow1 = ((ShadowItem) (Object) stack1).carpet_shadow$getShadowId();
             String shadow2 = ((ShadowItem) (Object) stack2).carpet_shadow$getShadowId();
+            if (CarpetShadowSettings.shadowItemTooltip && stack1.isOf(stack2.getItem()) &&
+                    (
+                        (
+                            shadow1 != null
+                            && (
+                                stack2.getComponents().get(DataComponentTypes.LORE) == null
+                                || !stack2.getComponents().get(DataComponentTypes.LORE).lines().stream().anyMatch(it -> it.getString().matches("shadow_id: (\\S+?)"))
+                            )
+                        ) || (
+                            shadow2 != null
+                            && (
+                                stack1.getComponents().get(DataComponentTypes.LORE) == null
+                                || !stack1.getComponents().get(DataComponentTypes.LORE).lines().stream().anyMatch(it -> it.getString().matches("shadow_id: (\\S+?)"))
+                            )
+                        )
+                    )
+            ) allowed = true;
             if (CarpetShadowSettings.shadowItemPreventCombine && allowed) {
                 if (shadow1 != null && shadow2 != null)
                     allowed =  false;
             } else if (shadow1 != null && shadow1.equals(shadow2) && allowed)
                     allowed =  false;
-            else if (CarpetShadowSettings.shadowItemTooltip && stack1.isOf(stack2.getItem()) &&
-                (
-                    (
-                        shadow1 != null
-                        && !stack2.getComponents().contains(DataComponentTypes.LORE)
-                    ) || (
-                        shadow2 != null
-                        && !stack1.getComponents().contains(DataComponentTypes.LORE)
-                    )
-                )
-            ) allowed = true;
         }
         return allowed;
+    }
+    public static boolean isShadowIdExists(String id) {
+        return CarpetShadow.shadowMap.asMap().containsKey(id);
     }
 }

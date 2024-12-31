@@ -2,6 +2,7 @@ package com.carpet_shadow;
 
 import carpet.CarpetExtension;
 import carpet.CarpetServer;
+import com.carpet_shadow.interfaces.ShadowComponent;
 import com.carpet_shadow.utility.RandomString;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -11,7 +12,10 @@ import com.google.gson.reflect.TypeToken;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +43,8 @@ public class CarpetShadow implements CarpetExtension, ModInitializer {
     @Override
     public void onInitialize() {
         CarpetServer.manageExtension(new CarpetShadow());
+//        Identifier.of("carpet-shadow", "shadow");
+        new ShadowNBTData();
         CarpetShadow.LOGGER.info("Carpet Shadow Loading!");
     }
 

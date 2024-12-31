@@ -25,6 +25,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unchecked","rawtypes"})
@@ -39,16 +41,26 @@ public class RecipeManagerMixin {
                 if (CarpetShadowSettings.shadowItemMode== CarpetShadowSettings.Mode.UNLINK || !CarpetShadowSettings.shadowCraftingGeneration)
                     return false;
                 boolean enderchest = false;
+                List<ItemStack> stacks = new ArrayList<>();
                 int count = 0;
                 for(int i = 0; i < inventory.getSize(); ++i) {
                     ItemStack itemStack2 = inventory.getStackInSlot(i);
                     if (!itemStack2.isEmpty()) {
-                        if (itemStack2.getItem().equals(Items.ENDER_CHEST))
+                        if (itemStack2.getItem().equals(Items.ENDER_CHEST) && !enderchest)
                             enderchest = true;
+                        else {
+                            stacks.add(itemStack2);
+                        }
                         count++;
                     }
                 }
-                return enderchest && count == 2;
+                var matches = enderchest && count == 2;
+                if (!matches) for (var it : stacks) {
+                    var shadowId = ((ShadowItem) (Object) it).carpet_shadow$getShadowId();
+                    if ((shadowId != null && !shadowId.isEmpty() && shadowId.matches("\\S+?")) && !Globals.isShadowIdExists(shadowId))
+                        ((ShadowItem) (Object) it).carpet_shadow$setShadowId(null);
+                }
+                return matches;
             }
 
             @Override

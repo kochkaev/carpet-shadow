@@ -3,8 +3,15 @@ package com.carpet_shadow.utility;
 import com.carpet_shadow.CarpetShadow;
 import com.carpet_shadow.CarpetShadowSettings;
 import com.carpet_shadow.Globals;
+import com.carpet_shadow.ShadowNBTData;
+import com.carpet_shadow.interfaces.ShadowComponent;
 import com.carpet_shadow.interfaces.ShadowItem;
+import com.carpet_shadow.interfaces.TooltipStack;
 import com.google.gson.JsonParseException;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.ComponentMapImpl;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -18,6 +25,8 @@ import net.minecraft.text.TextContent;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ItemStackInject {
@@ -82,6 +91,7 @@ public class ItemStackInject {
             }
 
             // post tooltip
+            stack = postTooltip(stack);
 //            String string;
 //            MutableText mutableText2;
 //            if (nbt != null && (nbt.contains(/*ItemStack.DISPLAY_KEY*/"components") || nbt.contains(ShadowItem.SHADOW_KEY))) {
@@ -117,6 +127,46 @@ public class ItemStackInject {
 //            }
         }
 //        CarpetShadow.LOGGER.info("Decode result: " + nbtElement.asString());
+        return stack;
+    }
+
+    public static ItemStack postTooltip(ItemStack stack) {
+////        NbtCompound display = new NbtCompound();
+        var shadowId = ((ShadowItem) (Object) stack).carpet_shadow$getShadowId();
+//        var lore = stack.getComponents().get(DataComponentTypes.LORE);
+//        List<Text> lines;
+//        if (shadowId == null) {
+//            if (lore == null || lore.lines().isEmpty()) return stack;
+//            lines = lore.lines().stream().filter(it -> {
+//                return !it.getString().matches("shadow_id: (\\S+?)");
+//            }).toList();
+////        ((TooltipStack)(Object)original).carpet_shadow$getComponentMapImpl().remove(DataComponentTypes.LORE);
+//        }
+//        else if (CarpetShadowSettings.shadowItemTooltip && !(lore!=null && lore.lines().stream().anyMatch(it->it.getString().matches("shadow_id: (\\S+?)")))) {
+//            MutableText text = Text.literal("shadow_id: ");
+//            MutableText sub = Text.literal(shadowId);
+//            sub.formatted(Formatting.GOLD, Formatting.BOLD);
+//            text.append(sub);
+//            text.formatted(Formatting.ITALIC);
+//            lines = lore!=null ? new ArrayList<>(lore.lines()) : new ArrayList<>();
+//            lines.add(text);
+//        }
+//        else return stack;
+//        lore = new LoreComponent(lines);
+////        ((TooltipStack) (Object) stack).carpet_shadow$getComponentMapImpl().set(DataComponentTypes.LORE, lore);
+//        stack.applyComponentsFrom(ComponentMap.builder().add(DataComponentTypes.LORE, lore).build());
+//        CarpetShadow.LOGGER.info(lines.stream().map(it -> it.getString()).toList());
+//        CarpetShadow.LOGGER.info(lore.lines().stream().map(it -> it.getString()).toList());
+//        CarpetShadow.LOGGER.info(stack.getComponents().get(DataComponentTypes.LORE).lines().stream().map(it -> it.getString()).toList());
+//        return stack;
+        var component = stack.getComponents().get(ShadowNBTData.SHADOW);
+        var components = ((TooltipStack)(Object)stack).carpet_shadow$getComponentMapImpl();
+        if (shadowId == null) {
+            components.remove(ShadowNBTData.SHADOW);
+        } else if (component == null) {
+            components.set(ShadowNBTData.SHADOW, new ShadowComponent(shadowId));
+        } else return stack;
+        stack.applyComponentsFrom(components);
         return stack;
     }
 }

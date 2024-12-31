@@ -9,20 +9,20 @@ public interface ShadowItem {
     static ItemStack carpet_shadow$copy_redirect(ItemStack instance, Operation<ItemStack> original) {
         ItemStack stack = original.call(instance);
         ((ShadowItem) (Object) stack).carpet_shadow$setShadowId(((ShadowItem) (Object) instance).carpet_shadow$getShadowId());
-        ((ShadowItem) (Object) stack).carpet_shadow$setClientShadowId(((ShadowItem) (Object) instance).carpet_shadow$getClientShadowId());
+//        ((ShadowItem) (Object) stack).carpet_shadow$setClientShadowId(((ShadowItem) (Object) instance).carpet_shadow$getClientShadowId());
         return stack;
     }
 
     static ItemStack carpet_shadow$copy_supplier(ItemStack instance, ItemStack copy) {
         ((ShadowItem) (Object) copy).carpet_shadow$setShadowId(((ShadowItem) (Object) instance).carpet_shadow$getShadowId());
-        ((ShadowItem) (Object) copy).carpet_shadow$setClientShadowId(((ShadowItem) (Object) instance).carpet_shadow$getClientShadowId());
+//        ((ShadowItem) (Object) copy).carpet_shadow$setClientShadowId(((ShadowItem) (Object) instance).carpet_shadow$getClientShadowId());
         return copy;
     }
 
     String carpet_shadow$getShadowId();
-    String carpet_shadow$getClientShadowId();
+//    String carpet_shadow$getClientShadowId();
 
     void carpet_shadow$setShadowId(String id);
-    void carpet_shadow$setClientShadowId(String id);
+//    void carpet_shadow$setClientShadowId(String id);
 
 }
