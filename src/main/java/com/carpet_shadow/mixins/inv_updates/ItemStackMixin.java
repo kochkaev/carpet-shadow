@@ -3,24 +3,15 @@ package com.carpet_shadow.mixins.inv_updates;
 
 import com.carpet_shadow.CarpetShadowSettings;
 import com.carpet_shadow.Globals;
-import com.carpet_shadow.interfaces.InventoryItem;
 import com.carpet_shadow.interfaces.ShadowItem;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 @Mixin(ItemStack.class)
-public abstract class ItemStackMixin implements InventoryItem {
+public abstract class ItemStackMixin {
 
 //    @Unique
 //    Set<Pair<Inventory,Integer>> slots = new HashSet<>();

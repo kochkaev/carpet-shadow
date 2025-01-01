@@ -21,8 +21,8 @@ public abstract class MinecraftServerMixin {
             if(CarpetShadowSettings.shadowItemUpdateFix) {
                 for (Inventory inv : Globals.toUpdate) {
                     try {
-//                        inv.markDirty();
-                        Globals.updateInventory(inv);
+                        inv.markDirty();
+//                        Globals.updateInventory(inv);
                     } catch (Throwable ex) {
                         CarpetShadow.LOGGER.error("Caught Exception while propagating shadow stack updates: ", ex);
                     }

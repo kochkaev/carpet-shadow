@@ -1,16 +1,11 @@
 package com.carpet_shadow;
 
-import com.carpet_shadow.interfaces.InventoryItem;
 import com.carpet_shadow.interfaces.ShadowItem;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.BuiltinRegistries;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 

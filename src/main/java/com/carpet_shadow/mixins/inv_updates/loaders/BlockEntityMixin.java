@@ -2,12 +2,8 @@ package com.carpet_shadow.mixins.inv_updates.loaders;
 
 
 import com.carpet_shadow.Globals;
-import com.carpet_shadow.interfaces.InventoryItem;
-import com.carpet_shadow.interfaces.ShadowItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;

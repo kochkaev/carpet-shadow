@@ -1,9 +1,7 @@
 package com.carpet_shadow.mixins.inv_updates;
 
 import com.carpet_shadow.Globals;
-import com.carpet_shadow.interfaces.InventoryItem;
 import com.carpet_shadow.interfaces.ShadowItem;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

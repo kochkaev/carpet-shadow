@@ -2,12 +2,8 @@ package com.carpet_shadow;
 
 import carpet.CarpetExtension;
 import carpet.CarpetServer;
-import com.carpet_shadow.interfaces.InventoryItem;
-import com.carpet_shadow.interfaces.ShadowItem;
 import com.carpet_shadow.newAPI.ShadowNBTData;
 import com.carpet_shadow.utility.RandomString;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

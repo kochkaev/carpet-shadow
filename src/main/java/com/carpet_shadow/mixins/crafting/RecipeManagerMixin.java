@@ -53,11 +53,11 @@ public class RecipeManagerMixin {
                     }
                 }
                 var matches = enderchest && count == 2;
-                if (!matches) for (var it : stacks) {
-                    var shadowId = ((ShadowItem) (Object) it).carpet_shadow$getShadowId();
-                    if ((shadowId != null && !shadowId.isEmpty() && shadowId.matches("\\S+?")) && !Globals.isShadowIdExists(shadowId))
-                        ((ShadowItem) (Object) it).carpet_shadow$setShadowId(null);
-                }
+//                if (!matches) for (var it : stacks) {
+//                    var shadowId = ((ShadowItem) (Object) it).carpet_shadow$getShadowId();
+//                    if ((shadowId != null && !shadowId.isEmpty() && shadowId.matches("\\S+?")) && !Globals.isShadowIdExists(shadowId))
+//                        ((ShadowItem) (Object) it).carpet_shadow$removeShadow();
+//                }
                 return matches;
             }
 

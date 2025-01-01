@@ -2,11 +2,9 @@ package com.carpet_shadow.mixins.inv_updates.loaders;
 
 
 import com.carpet_shadow.Globals;
-import com.carpet_shadow.interfaces.InventoryItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.command.BlockDataObject;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
