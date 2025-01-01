@@ -38,6 +38,13 @@ public abstract class ItemEntityMixin {
     @Inject(method = "onPlayerCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;getStack()Lnet/minecraft/item/ItemStack;", shift = At.Shift.BY, by = 2))
     public void setEntityForStack(PlayerEntity player, CallbackInfo ci, @Local(ordinal = 0) ItemStack stack) {
         ((ItemEntitySlot) (Object) stack).carpet_shadow$setEntity((ItemEntity)(Object)this);
+//        if (((ShadowItem)(Object)stack).carpet_shadow$isItShadowItem()) {
+//            Globals.addInventory(
+//                    ((ShadowItem)(Object)stack).carpet_shadow$getShadowId(),
+//                    player.getInventory(),
+//
+//            );
+//        }
     }
 
     @Inject(method = "onPlayerCollision", at = @At(value = "RETURN"))

@@ -1,5 +1,6 @@
 package com.carpet_shadow.mixins.inv_updates;
 
+import com.carpet_shadow.Globals;
 import com.carpet_shadow.interfaces.InventoryItem;
 import com.carpet_shadow.interfaces.ShadowItem;
 import net.minecraft.inventory.Inventory;
@@ -22,7 +23,9 @@ public abstract class SimpleInventoryMixin {
     public void track_remove(int slot, CallbackInfoReturnable<ItemStack> cir) {
         ItemStack curr = getStack(slot);
         if (((ShadowItem) (Object) curr).carpet_shadow$isItShadowItem()) {
-            ((InventoryItem) (Object) curr).carpet_shadow$removeSlot((Inventory) this, slot);
+//            ((InventoryItem) (Object) curr).carpet_shadow$removeSlot((Inventory) this, slot);
+            var shadowId = ((ShadowItem)(Object)curr).carpet_shadow$getShadowId();
+            Globals.removeInventory(shadowId, this, slot);
         }
     }
 
@@ -30,10 +33,14 @@ public abstract class SimpleInventoryMixin {
     public void track_set(int slot, ItemStack next, CallbackInfo ci) {
         ItemStack curr = getStack(slot);
         if (((ShadowItem) (Object) curr).carpet_shadow$isItShadowItem()) {
-            ((InventoryItem) (Object) curr).carpet_shadow$removeSlot((Inventory) this, slot);
+            var shadowId = ((ShadowItem)(Object)curr).carpet_shadow$getShadowId();
+            Globals.removeInventory(shadowId, this, slot);
+//            ((InventoryItem) (Object) curr).carpet_shadow$removeSlot((Inventory) this, slot);
         }
         if (((ShadowItem) (Object) next).carpet_shadow$isItShadowItem()) {
-            ((InventoryItem) (Object) next).carpet_shadow$addSlot((Inventory) this, slot);
+            var shadowId = ((ShadowItem)(Object)next).carpet_shadow$getShadowId();
+            Globals.addInventory(shadowId, this, slot);
+//            ((InventoryItem) (Object) next).carpet_shadow$addSlot((Inventory) this, slot);
         }
     }
 

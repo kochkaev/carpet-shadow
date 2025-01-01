@@ -4,6 +4,7 @@ package com.carpet_shadow.mixins.inv_updates;
 import com.carpet_shadow.CarpetShadowSettings;
 import com.carpet_shadow.Globals;
 import com.carpet_shadow.interfaces.InventoryItem;
+import com.carpet_shadow.interfaces.ShadowItem;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -21,28 +22,28 @@ import java.util.Set;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements InventoryItem {
 
-    @Unique
-    Set<Pair<Inventory,Integer>> slots = new HashSet<>();
+//    @Unique
+//    Set<Pair<Inventory,Integer>> slots = new HashSet<>();
 
-    @Override
-    public Collection<Inventory> carpet_shadow$getInventories() {
-        return slots.stream().map(Pair::getLeft).toList();
-    }
+//    @Override
+//    public Collection<Inventory> carpet_shadow$getInventories() {
+//        return slots.stream().map(Pair::getLeft).toList();
+//    }
 
-    @Override
-    public void carpet_shadow$addSlot(Inventory inventory, int slot) {
-        slots.add(new ImmutablePair<>(inventory,slot));
-    }
+//    @Override
+//    public void carpet_shadow$addSlot(Inventory inventory, int slot) {
+//        slots.add(new ImmutablePair<>(inventory,slot));
+//    }
 
-    @Override
-    public void carpet_shadow$removeSlot(Inventory inventory, int slot) {
-        slots.remove(new ImmutablePair<>(inventory, slot));
-    }
+//    @Override
+//    public void carpet_shadow$removeSlot(Inventory inventory, int slot) {
+//        slots.remove(new ImmutablePair<>(inventory, slot));
+//    }
 
     @Inject(method = "setCount", at=@At("RETURN"))
     public void propagate_update(int count, CallbackInfo ci){
-        if (CarpetShadowSettings.shadowItemUpdateFix) {
-            Globals.toUpdate.addAll(carpet_shadow$getInventories());
+        if (CarpetShadowSettings.shadowItemUpdateFix && ((ShadowItem)(Object)this).carpet_shadow$isItShadowItem()) {
+            Globals.updateInventories(((ShadowItem)(Object)this).carpet_shadow$getShadowId());
         }
     }
 

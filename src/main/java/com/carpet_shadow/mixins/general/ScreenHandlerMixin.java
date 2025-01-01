@@ -34,6 +34,7 @@ public abstract class ScreenHandlerMixin {
         try {
             original.call(instance, slotIndex, button, actionType, player);
         } catch (Throwable error) {
+//            CarpetShadow.LOGGER.info(error.getMessage());
             if(actionType!=SlotActionType.SWAP && actionType!=SlotActionType.PICKUP && actionType!=SlotActionType.QUICK_CRAFT)
                 throw error;
             ItemStack stack1 = this.getSlot(slotIndex).getStack();

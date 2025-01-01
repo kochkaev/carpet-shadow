@@ -13,8 +13,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Pair;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,10 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CarpetShadow implements CarpetExtension, ModInitializer {
-    public static final Cache<String, ItemStack> shadowMap = CacheBuilder.newBuilder().weakValues().build();
+//    public static final Cache<String, Pair<ItemStack, List<Pair<Inventory, Integer>>>> shadowMap = CacheBuilder.newBuilder().weakValues().build();
+    public static final Map<String, Pair<ItemStack, List<Pair<Inventory, Integer>>>> shadowMap = new HashMap<>();
     public static final Logger LOGGER = LogManager.getLogger("carpet-shadow");
     public static RandomString shadow_id_generator = new RandomString(CarpetShadowSettings.shadowItemIdSize);
 
@@ -45,28 +50,23 @@ public class CarpetShadow implements CarpetExtension, ModInitializer {
 //        Identifier.of("carpet-shadow", "shadow");
         new ShadowNBTData();
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            try {
-                var inv = handler.getPlayer().getInventory();
-                for (int index = 0; index < inv.size(); index++) {
-                    ItemStack stack = inv.getStack(index);
-                    if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
-                        ((InventoryItem) (Object) stack).carpet_shadow$addSlot(inv, index);
-                    }
-                }
-            } catch (Exception e) {}
+            Globals.updateInventory(handler.player.getInventory());
+        });;
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+            Globals.removeInventory(handler.player.getInventory());
         });
         CarpetShadow.LOGGER.info("Carpet Shadow Loading!");
     }
 
     @Override
     public void onServerLoaded(MinecraftServer server) {
-        shadowMap.invalidateAll();
+//        shadowMap.invalidateAll();
     }
 
     @Override
     public void onTick(MinecraftServer server) {
-        if (server.getTicks() % 1000 == 0)
-            CarpetShadow.shadowMap.cleanUp();
+//        if (server.getTicks() % 1000 == 0)
+//            CarpetShadow.shadowMap.cleanUp();
     }
 
     @Override

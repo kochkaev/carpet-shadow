@@ -1,5 +1,6 @@
 package com.carpet_shadow.mixins.inv_updates;
 
+import com.carpet_shadow.Globals;
 import com.carpet_shadow.interfaces.InventoryItem;
 import com.carpet_shadow.interfaces.ShadowItem;
 import net.minecraft.inventory.Inventory;
@@ -26,10 +27,14 @@ public abstract class SlotMixin {
     public void remember_inventory(ItemStack next, CallbackInfo ci) {
             ItemStack curr = getStack();
             if(((ShadowItem)(Object)curr).carpet_shadow$isItShadowItem()){
-                ((InventoryItem)(Object)curr).carpet_shadow$removeSlot(this.inventory, getIndex());
+//                ((InventoryItem)(Object)curr).carpet_shadow$removeSlot(this.inventory, getIndex());
+                var shadowId = ((ShadowItem)(Object)curr).carpet_shadow$getShadowId();
+                Globals.removeInventory(shadowId, this.inventory, getIndex());
             }
             if(((ShadowItem)(Object)next).carpet_shadow$isItShadowItem()){
-                ((InventoryItem)(Object)next).carpet_shadow$addSlot(this.inventory, getIndex());
+                var shadowId = ((ShadowItem)(Object)next).carpet_shadow$getShadowId();
+                Globals.removeInventory(shadowId, this.inventory, getIndex());
+//                ((InventoryItem)(Object)next).carpet_shadow$addSlot(this.inventory, getIndex());
             }
     }
 }

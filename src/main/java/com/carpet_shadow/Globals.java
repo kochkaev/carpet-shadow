@@ -1,10 +1,16 @@
 package com.carpet_shadow;
 
+import com.carpet_shadow.interfaces.InventoryItem;
 import com.carpet_shadow.interfaces.ShadowItem;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.BuiltinRegistries;
+import net.minecraft.util.Pair;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,15 +23,19 @@ public class Globals {
     public static ItemStack getByIdOrNull(String shadow_id) {
         if(shadow_id == null)
             return null;
-        return CarpetShadow.shadowMap.getIfPresent(shadow_id);
+        var cache = CarpetShadow.shadowMap.get(shadow_id);
+        return cache!=null ? cache.getLeft() : null;
     }
 
     public static ItemStack getByIdOrAdd(String shadow_id, ItemStack stack) {
-        ItemStack reference = CarpetShadow.shadowMap.getIfPresent(shadow_id);
-        if (reference != null)
+        var cache = CarpetShadow.shadowMap.get(shadow_id);
+        if (cache != null) {
+            ItemStack reference = cache.getLeft();
             return reference;
+        }
+        CarpetShadow.shadowMap.put(shadow_id, new Pair<>(stack, new ArrayList<Pair<Inventory, Integer>>()));
         ((ShadowItem)(Object)stack).carpet_shadow$setShadowId(shadow_id);
-        CarpetShadow.shadowMap.put(shadow_id, stack);
+//        if (!(((ShadowItem)(Object)stack).carpet_shadow$isItShadowItem()))
         return stack;
     }
 
@@ -50,6 +60,73 @@ public class Globals {
         return allowed;
     }
     public static boolean isShadowIdExists(String id) {
-        return CarpetShadow.shadowMap.asMap().containsKey(id);
+        return CarpetShadow.shadowMap.containsKey(id);
+    }
+
+    public static void updateInventory(Object object) {
+        if (object instanceof Inventory inv) {
+            try {
+                for (int index = 0; index < inv.size(); index++) {
+                    ItemStack stack = inv.getStack(index);
+                    if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
+                        var shadowId = ((ShadowItem)(Object)stack).carpet_shadow$getShadowId();
+                        var cache = CarpetShadow.shadowMap.get(shadowId);
+                        var pair = new Pair<>(inv, index);
+                        if (cache!=null) {
+//                            stack.setCount(cache.getLeft().getCount());
+                            inv.setStack(index, cache.getLeft());
+                            if (!cache.getRight().contains(pair)) cache.getRight().add(pair);
+                        } else {
+                            var list = new ArrayList<Pair<Inventory, Integer>>();
+                            list.add(pair);
+                            CarpetShadow.shadowMap.put(shadowId, new Pair<>(stack, list));
+                        }
+                    }
+                }
+            } catch (Exception ignored){}
+        }
+    }
+    public static void updateItemStack(ItemStack stack) {
+        if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
+            var cache = CarpetShadow.shadowMap.get(((ShadowItem)(Object)stack).carpet_shadow$getShadowId());
+            if (cache!=null) cache.getLeft().setCount(stack.getCount());
+            else CarpetShadow.shadowMap.put(((ShadowItem) (Object) stack).carpet_shadow$getShadowId(), new Pair<>(stack, new ArrayList<>()));
+        }
+    }
+    public static void addInventory(String shadowId, Object object, int slot) {
+        if (object instanceof Inventory inv) {
+            var cache = CarpetShadow.shadowMap.get(shadowId);
+            if (cache != null) cache.getRight().add(new Pair<>(inv, slot));
+        }
+    }
+    public static void removeInventory(String shadowId, Object object, int slot) {
+        if (object instanceof Inventory inv) {
+            var cache = CarpetShadow.shadowMap.get(shadowId);
+//            if (cache != null) cache.setRight(cache.getRight().stream().filter(it -> !it.getLeft().equals(inv)).toList());
+            if (cache != null) cache.getRight().remove(new Pair<>(inv, slot));
+        }
+    }
+    public static void removeInventory(Object object) {
+        if (object instanceof Inventory inv) {
+            try {
+                for (int index = 0; index < inv.size(); index++) {
+                    ItemStack stack = inv.getStack(index);
+                    if (((ShadowItem) (Object) stack).carpet_shadow$isItShadowItem()) {
+                        var shadowId = ((ShadowItem)(Object)stack).carpet_shadow$getShadowId();
+                        var cache = CarpetShadow.shadowMap.get(shadowId);
+                        if (cache!=null) {
+                            var pair = new Pair<>(inv, index);
+                            cache.getRight().remove(pair);
+                        }
+                    }
+                }
+            } catch (Exception ignored){}
+        }
+    }
+    public static void updateInventories(String shadowId) {
+        var cache = CarpetShadow.shadowMap.get(shadowId);
+//        CarpetShadow.LOGGER.info(cache);
+        if (cache != null)
+            toUpdate.addAll(cache.getRight().stream().map(it -> it.getLeft()).toList());
     }
 }

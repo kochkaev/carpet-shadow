@@ -1,6 +1,7 @@
 package com.carpet_shadow.mixins.inv_updates.loaders;
 
 
+import com.carpet_shadow.Globals;
 import com.carpet_shadow.interfaces.InventoryItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.FallingBlockEntity;
@@ -15,7 +16,7 @@ public abstract class FallingBlockEntityMixin {
 
     @Redirect(method = "tick",at=@At(value = "INVOKE",target = "Lnet/minecraft/block/entity/BlockEntity;read(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/registry/RegistryWrapper$WrapperLookup;)V"))
     public void interceptBlockEntityLoad(BlockEntity instance, NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup){
-        InventoryItem.readNbt(instance,nbt);
+        Globals.updateInventory(instance);
     }
 
 
